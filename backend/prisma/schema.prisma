@@ -1,0 +1,64 @@
+// ================================
+// Prisma Schema – Me API Playground
+// ================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ================================
+// Models
+// ================================
+
+model Profile {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  education String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  skills    Skill[]
+  projects  Project[]
+  works     Work[]
+  links     Link?
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId Int
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  links       String?
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   Int
+}
+
+model Work {
+  id        Int      @id @default(autoincrement())
+  company   String
+  role      String
+  duration  String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId Int
+}
+
+model Link {
+  id        Int      @id @default(autoincrement())
+  github    String?
+  linkedin  String?
+  portfolio String?
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId Int      @unique
+}
