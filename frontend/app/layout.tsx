@@ -1,4 +1,3 @@
-
 import type { ReactNode } from "react";
 
 export default function RootLayout({
@@ -12,4 +11,3 @@ export default function RootLayout({
     </html>
   );
 }
-
